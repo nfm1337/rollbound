@@ -27,9 +27,24 @@ Useful Gradle tasks and flags:
 - `clean`: removes `build` folders, which store compiled classes and built archives.
 - `eclipse`: generates Eclipse project data.
 - `idea`: generates IntelliJ project data.
+- `detekt`: runs static analysis, including Jetpack Compose rules.
+- `ktlintCheck`: checks Kotlin formatting and Jetpack Compose conventions.
+- `ktlintFormat`: automatically fixes supported Kotlin formatting violations.
 - `lwjgl3:jar`: builds application's runnable jar, which can be found at `lwjgl3/build/libs`.
 - `lwjgl3:run`: starts the application.
 - `test`: runs unit tests (if any).
 
 Note that most tasks that are not specific to a single project can be run with `name:` prefix, where the `name` should be replaced with the ID of a specific project.
 For example, `core:clean` removes `build` folder only from the `core` project.
+
+## Git hooks
+
+Enable the repository's tracked hooks once after cloning:
+
+```shell
+git config core.hooksPath .githooks
+```
+
+Before each commit, the hooks run ktlint and Detekt across the project. Commit messages must follow
+[Conventional Commits](https://www.conventionalcommits.org/), for example
+`feat(core): add player movement`.

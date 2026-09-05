@@ -1,0 +1,23 @@
+#!/usr/bin/env sh
+
+set -eu
+
+commit_message_file=$1
+subject=$(sed -n '1p' "$commit_message_file")
+conventional_pattern='^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(\([a-z0-9][a-z0-9._/-]*\))?!?: [^[:space:]].*$'
+
+if printf '%s\n' "$subject" | grep -Eq "$conventional_pattern"; then
+    exit 0
+fi
+
+cat >&2 <<'EOF'
+Commit message must follow Conventional Commits:
+  <type>(<optional scope>): <description>
+
+Examples:
+  feat(core): add player movement
+  fix(android): restore game state
+  chore(quality): update lint rules
+EOF
+
+exit 1

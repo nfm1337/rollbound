@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+
+set -eu
+
+repo_root=$(git rev-parse --show-toplevel)
+cd "$repo_root"
+
+echo "Running ktlint and Detekt..."
+
+if command -v cmd.exe >/dev/null 2>&1; then
+    cmd.exe //d //c "gradlew.bat ktlintCheck detekt"
+else
+    ./gradlew ktlintCheck detekt
+fi
