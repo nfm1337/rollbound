@@ -8,6 +8,8 @@ buildscript {
   }
   dependencies {
     classpath "com.android.tools.build:gradle:8.9.3"
+    classpath "dev.detekt:detekt-gradle-plugin:$detektVersion"
+    classpath "org.jlleitschuh.gradle:ktlint-gradle:$ktlintGradleVersion"
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
 
   }
@@ -61,6 +63,9 @@ configure(subprojects - project(':android')) {
 }
 
 subprojects {
+  apply plugin: 'dev.detekt'
+  apply plugin: 'org.jlleitschuh.gradle.ktlint'
+
   version = "$projectVersion"
   ext.appName = 'Rollbound'
   repositories {
@@ -69,6 +74,26 @@ subprojects {
     mavenLocal()
     maven { url = 'https://central.sonatype.com/repository/maven-snapshots/' }
     maven { url = 'https://jitpack.io' }
+  }
+
+  ktlint {
+    version = ktlintVersion
+    android = project == project(':android')
+    outputToConsole = true
+    ignoreFailures = false
+  }
+
+  detekt {
+    toolVersion = detektVersion
+    buildUponDefaultConfig = true
+    config.setFrom(rootProject.files('config/detekt/detekt.yml'))
+    parallel = true
+    ignoreFailures = false
+  }
+
+  dependencies {
+    detektPlugins "io.nlopez.compose.rules:detekt:$composeRulesVersion"
+    ktlintRuleset "io.nlopez.compose.rules:ktlint:$composeRulesVersion"
   }
 }
 

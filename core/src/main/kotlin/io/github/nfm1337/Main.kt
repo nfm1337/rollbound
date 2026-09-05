@@ -27,12 +27,17 @@ class FirstScreen : KtxScreen {
     override fun render(delta: Float) {
         clearScreen(red = 0.7f, green = 0.7f, blue = 0.7f)
         batch.use {
-            it.draw(image, 100f, 160f)
+            it.draw(image, LOGO_X, LOGO_Y)
         }
     }
 
     override fun dispose() {
         image.disposeSafely()
         batch.disposeSafely()
+    }
+
+    private companion object {
+        const val LOGO_X = 100f
+        const val LOGO_Y = 160f
     }
 }
